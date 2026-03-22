@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מקלדת הפוכה | Keyboard Elite - Srullogic Systems</title>
+    <meta name="description" content="הכלי המוביל לפתרון בעיות מקלדת הפוכה. המרת ג'יבריש לטקסט קריא באופן אוטומטי.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #7240f2; --bg: #f4f7fe; --text: #333; --card: #ffffff;
+            --input-border: #e0e6ed; --accent-green: #1ebea5; --accent-red: #ff4757;
+            --accent-blue: #3498db; --accent-gray: #636e72; --transition: all 0.3s ease;
+        }
+        [data-theme="dark"] {
+            --bg: #121212; --text: #ffffff; --card: #1e1e1e; --input-border: #333; --primary: #9d77ff;
+        }
+        body {
+            font-family: 'Assistant', sans-serif; background-color: var(--bg); color: var(--text);
+            margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+        .container {
+            width: 90%; max-width: 480px; background: var(--card); padding: 40px 30px;
+            border-radius: 35px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); text-align: center; position: relative;
+        }
+        .style-dropdown { position: absolute; top: 25px; left: 25px; }
+        .style-dropdown select {
+            background: var(--primary); color: white; border: none; padding: 8px 12px;
+            border-radius: 12px; cursor: pointer; font-size: 0.85rem;
+        }
+        /* אזור הלוגו */
+        .logo-container { margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; }
+        .main-logo { max-width: 150px; height: auto; margin-bottom: 10px; }
+        .brand-name { font-size: 0.85rem; letter-spacing: 1.5px; color: var(--primary); font-weight: 700; margin: 0; }
+        h1 { font-weight: 800; font-size: 2.4rem; color: var(--primary); margin: 5px 0 25px 0; }
+        
+        .mode-selector { display: flex; background: rgba(0,0,0,0.05); border-radius: 20px; margin-bottom: 25px; padding: 6px; }
+        .mode-selector button { flex: 1; border: none; padding: 12px; border-radius: 15px; cursor: pointer; font-weight: 700; background: transparent; color: var(--text); }
+        .mode-selector button.active { background: var(--primary); color: white; }
+        
+        textarea {
+            width: 100%; height: 120px; border: 2px solid var(--input-border); border-radius: 22px;
+            padding: 18px; box-sizing: border-box; font-family: inherit; resize: none;
+            background: transparent; color: inherit; font-size: 1.1rem; margin-bottom: 15px;
+        }
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .btn-action {
+            border: none; padding: 15px; border-radius: 18px; color: white; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .bg-green { background: var(--accent-green); } .bg-red { background: var(--accent-red); }
+        .bg-blue { background: var(--accent-blue); } .bg-gray { background: var(--accent-gray); }
+        .btn-full { grid-column: span 2; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="style-dropdown">
+        <select onchange="changeTheme(this.value)">
+            <option value="light">☀️ בהיר</option>
+            <option value="dark">🌙 כהה</option>
+            <option value="auto">🖥️ אוטומטי</option>
+        </select>
+    </div>
+
+    <div class="logo-container">
+        <img src="logo.png" alt="Logo" class="main-logo" onerror="this.style.display='none'">
+        <p class="brand-name">SRULLOGIC SYSTEMS</p>
+        <h1>Keyboard Elite</h1>
+    </div>
+
+    <div class="mode-selector">
+        <button id="mode-auto" class="active" onclick="setMode('auto')">אוטומטי</button>
+        <button id="mode-manual" onclick="setMode('manual')">ידני</button>
+    </div>
+
+    <textarea id="inputArea" placeholder="הקלד כאן (עברית או אנגלית)..." oninput="handleInput()"></textarea>
+    
+    <div id="manualBtns" style="display: none; margin-bottom: 15px;">
+        <div class="action-grid">
+            <button class="btn-action bg-blue" onclick="convert('enToHe')">עברית ⬅️ אנגלית</button>
+            <button class="btn-action bg-blue" onclick="convert('heToEn')">אנגלית ⬅️ עברית</button>
+        </div>
+    </div>
+
+    <textarea id="outputArea" readonly placeholder="התוצאה תופיע כאן..."></textarea>
+
+    <div class="action-grid">
+        <button class="btn-action bg-green" onclick="copyText()">📋 העתק</button>
+        <button class="btn-action bg-green" onclick="whatsappShare()">💬 WhatsApp</button>
+        <button class="btn-action bg-red" onclick="clearAll()">🗑️ נקה</button>
+        <button class="btn-action bg-blue" onclick="shareText()">📤 שתף</button>
+        <button class="btn-action bg-red btn-full" onclick="googleSearch()">🔍 חפש בגוגל</button>
+    </div>
+
+    <footer>.Srullogic Systems 2026 ©</footer>
+</div>
+
+<script>
+    const enToHeMap = {'q':'/','w':'\'','e':'ק','r':'ר','t':'א','y':'ט','u':'ו','i':'ן','o':'ם','p':'פ','a':'ש','s':'ד','d':'ג','f':'כ','g':'ע','h':'י','j':'ח','k':'ל','l':'ך',';':'ף','\'':',','z':'ז','x':'ס','c':'ב','v':'ה','b':'נ','n':'מ','m':'צ',',':'ת','.':'ץ','/':'.',' ':' '};
+    const heToEnMap = Object.fromEntries(Object.entries(enToHeMap).map(([k, v]) => [v, k]));
+    
+    let currentMode = 'auto';
+
+    function setMode(mode) {
+        currentMode = mode;
+        document.getElementById('mode-auto').className = mode === 'auto' ? 'active' : '';
+        document.getElementById('mode-manual').className = mode === 'manual' ? 'active' : '';
+        document.getElementById('manualBtns').style.display = mode === 'manual' ? 'block' : 'none';
+    }
+
+    function handleInput() {
+        const input = document.getElementById('inputArea').value;
+        if(currentMode === 'auto') {
+            // זיהוי אם הטקסט מכיל אותיות עבריות
+            const hasHebrew = /[א-ת]/.test(input);
+            if(hasHebrew) {
+                convert('heToEn');
+            } else {
+                convert('enToHe');
+            }
+        }
+    }
+
+    function convert(type) {
+        const input = document.getElementById('inputArea').value;
+        const map = type === 'enToHe' ? enToHeMap : heToEnMap;
+        let res = "";
+        for(let char of input.toLowerCase()) { res += map[char] || char; }
+        document.getElementById('outputArea').value = res;
+    }
+
+    function changeTheme(val) {
+        if(val === 'auto') {
+            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        } else {
+            document.body.setAttribute('data-theme', val);
+        }
+    }
+
+    function copyText() {
+        const out = document.getElementById('outputArea');
+        out.select();
+        document.execCommand('copy');
+        alert('הועתק!');
+    }
+
+    function clearAll() {
+        document.getElementById('inputArea').value = "";
+        document.getElementById('outputArea').value = "";
+    }
+
+    function googleSearch() {
+        const text = document.getElementById('outputArea').value;
+        if(text) window.open(`https://www.google.com/search?q=${encodeURIComponent(text)}`);
+    }
+
+    function whatsappShare() {
+        const text = document.getElementById('outputArea').value;
+        if(text) window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+    }
+
+    function shareText() {
+        if(navigator.share) navigator.share({text: document.getElementById('outputArea').value});
+    }
+</script>
+
+</body>
+</html>
