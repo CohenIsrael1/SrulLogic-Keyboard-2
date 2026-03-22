@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>מקלדת הפוכה | Keyboard Elite - פתרון מהיר לג'יבריש</title>
+    <meta name="description" content="הכלי המקצועי ביותר לתיקון מקלדת הפוכה. המרה אוטומטית מעברית לאנגלית ומאנגלית לעברית בלחיצת כפתור.">
+    <meta name="keywords" content="מקלדת הפוכה, המרת טקסט, עברית אנגלית, תיקון ג'יבריש, Srullogic Systems">
+    <meta name="author" content="Srullogic Systems">
+    
+    <meta name="google-site-verification" content="google5d50e2859c657986" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #7240f2; --bg: #f4f7fe; --text: #333; --card: #ffffff;
+            --input-border: #e0e6ed; --accent-green: #1ebea5; --accent-red: #ff4757;
+            --accent-blue: #3498db; --accent-gray: #636e72; --transition: all 0.3s ease;
+        }
+        [data-theme="dark"] {
+            --bg: #121212; --text: #ffffff; --card: #1e1e1e; --input-border: #333; --primary: #9d77ff;
+        }
+        body {
+            font-family: 'Assistant', sans-serif; background-color: var(--bg); color: var(--text);
+            margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+        .container {
+            width: 90%; max-width: 480px; background: var(--card); padding: 40px 30px;
+            border-radius: 35px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); text-align: center; position: relative;
+        }
+
+        /* כפתור תפריט צף (במקום הקישור המכוער) */
+        .nav-menu {
+            position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 15px; z-index: 1000;
+        }
+        .nav-btn {
+            background: var(--primary); color: white; border: none; width: 50px; height: 50px;
+            border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: var(--transition); font-size: 1.2rem;
+        }
+        .nav-btn:hover { transform: scale(1.1); }
+        .nav-content {
+            display: none; background: var(--card); border-radius: 15px; padding: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1); flex-direction: column; gap: 8px;
+        }
+        .nav-content a {
+            text-decoration: none; color: var(--text); font-weight: 700; padding: 8px 15px;
+            border-radius: 8px; transition: 0.2s; font-size: 0.9rem;
+        }
+        .nav-content a:hover { background: var(--primary); color: white; }
+
+        /* הגדרות לוגו */
+        .logo-box { margin-bottom: 20px; min-height: 80px; display: flex; flex-direction: column; align-items: center; }
+        .main-logo { max-width: 150px; height: auto; transition: 0.3s; }
+        .brand { font-size: 0.8rem; letter-spacing: 2px; color: var(--primary); font-weight: 800; margin-top: 5px; }
+
+        h1 { font-weight: 800; font-size: 2.4rem; color: var(--primary); margin: 5px 0 25px 0; }
+        
+        /* בורר מצבים */
+        .mode-selector { display: flex; background: rgba(0,0,0,0.05); border-radius: 20px; margin-bottom: 20px; padding: 5px; }
+        .mode-selector button { flex: 1; border: none; padding: 12px; border-radius: 15px; cursor: pointer; font-weight: 700; background: transparent; color: var(--text); }
+        .mode-selector button.active { background: var(--primary); color: white; }
+
+        textarea {
+            width: 100%; height: 110px; border: 2px solid var(--input-border); border-radius: 20px;
+            padding: 15px; box-sizing: border-box; font-family: inherit; resize: none;
+            background: transparent; color: inherit; font-size: 1.1rem; margin-bottom: 12px; transition: 0.3s;
+        }
+        textarea:focus { border-color: var(--primary); outline: none; }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn {
+            border: none; padding: 15px; border-radius: 15px; color: white; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s;
+        }
+        .btn:active { transform: scale(0.98); }
+        .bg-green { background: var(--accent-green); } .bg-red { background: var(--accent-red); }
+        .bg-blue { background: var(--accent-blue); } .bg-gray { background: var(--accent-gray); }
+        .btn-full { grid-column: span 2; }
+
+        footer { margin-top: 25px; font-size: 0.85rem; border-top: 1px solid var(--input-border); padding-top: 15px; opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+<div class="nav-menu">
+    <button class="nav-btn" onclick="toggleMenu()">📂</button>
+    <div class="nav-content" id="navContent">
+        <a href="index.html">🏠 בית</a>
+        <a href="about.html">📖 אודות</a>
+        <a href="instructions.html">❓ מדריך</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="logo-box">
+        <img src="logo.png" alt="Keyboard Elite Logo" class="main-logo" onerror="this.src='https://via.placeholder.com/150x60?text=SRULLOGIC+LOGO'">
+        <div class="brand">SRULLOGIC SYSTEMS</div>
+    </div>
+
+    <h1>Keyboard Elite</h1>
+
+    <div class="mode-selector">
+        <button id="mode-auto" class="active" onclick="setMode('auto')">אוטומטי</button>
+        <button id="mode-manual" onclick="setMode('manual')">ידני</button>
+    </div>
+
+    <textarea id="inputArea" placeholder="הקלד כאן טקסט לתיקון..." oninput="handleInput()"></textarea>
+    
+    <div id="manualBtns" style="display: none; margin-bottom: 12px;" class="action-grid">
+        <button class="btn bg-blue" onclick="convert('enToHe')">עברית ⬅️ אנגלית</button>
+        <button class="btn bg-blue" onclick="convert('heToEn')">אנגלית ⬅️ עברית</button>
+    </div>
+
+    <textarea id="outputArea" readonly placeholder="התוצאה תופיע כאן..."></textarea>
+
+    <div class="action-grid">
+        <button class="btn bg-green" onclick="copyText()">📋 העתק</button>
+        <button class="btn bg-green" onclick="whatsappShare()">💬 WhatsApp</button>
+        <button class="btn bg-red" onclick="clearAll()">🗑️ נקה</button>
+        <button class="btn bg-blue" onclick="shareText()">📤 שתף</button>
+        <button class="btn bg-red btn-full" onclick="googleSearch()">🔍 חפש בגוגל</button>
+        <button class="btn bg-gray btn-full" onclick="location.reload()">🔄 רענן דף</button>
+    </div>
+
+    <footer>
+        <p>הכלי המוביל לפתרון בעיות <strong>מקלדת הפוכה</strong> והמרת טקסט.</p>
+        <small>© Srullogic Systems. All rights reserved 2026</small>
+    </footer>
+</div>
+
+<script>
+    const enToHeMap = {'q':'/','w':'\'','e':'ק','r':'ר','t':'א','y':'ט','u':'ו','i':'ן','o':'ם','p':'פ','a':'ש','s':'ד','d':'ג','f':'כ','g':'ע','h':'י','j':'ח','k':'ל','l':'ך',';':'ף','\'':',','z':'ז','x':'ס','c':'ב','v':'ה','b':'נ','n':'מ','m':'צ',',':'ת','.':'ץ','/':'.',' ':' '};
+    const heToEnMap = Object.fromEntries(Object.entries(enToHeMap).map(([k, v]) => [v, k]));
+    let currentMode = 'auto';
+
+    function toggleMenu() {
+        const menu = document.getElementById('navContent');
+        menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function setMode(mode) {
+        currentMode = mode;
+        document.getElementById('mode-auto').classList.toggle('active', mode === 'auto');
+        document.getElementById('mode-manual').classList.toggle('active', mode === 'manual');
+        document.getElementById('manualBtns').style.display = (mode === 'manual') ? 'grid' : 'none';
+    }
+
+    function handleInput() {
+        const input = document.getElementById('inputArea').value;
+        if(currentMode === 'auto' && input) {
+            // זיהוי חכם: אם יש עברית - תרגם לאנגלית. אם רק אנגלית - תרגם לעברית.
+            const hasHebrew = /[א-ת]/.test(input);
+            convert(hasHebrew ? 'heToEn' : 'enToHe');
+        }
+    }
+
+    function convert(type) {
+        const input = document.getElementById('inputArea').value;
+        const map = (type === 'enToHe') ? enToHeMap : heToEnMap;
+        let res = "";
+        for(let char of input.toLowerCase()) { res += map[char] || char; }
+        document.getElementById('outputArea').value = res;
+    }
+
+    function copyText() {
+        const out = document.getElementById('outputArea');
+        out.select();
+        document.execCommand('copy');
+        alert('הטקסט הועתק!');
+    }
+
+    function clearAll() {
+        document.getElementById('inputArea').value = "";
+        document.getElementById('outputArea').value = "";
+    }
+
+    function googleSearch() {
+        const text = document.getElementById('outputArea').value;
+        if(text) window.open(`https://www.google.com/search?q=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function whatsappShare() {
+        const text = document.getElementById('outputArea').value;
+        if(text) window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function shareText() {
+        if (navigator.share) navigator.share({ title: 'Keyboard Elite', text: document.getElementById('outputArea').value });
+    }
+</script>
+
+</body>
+</html>
