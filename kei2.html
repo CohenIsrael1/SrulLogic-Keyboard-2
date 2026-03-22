@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyboard Elite | פתרון מקלדת הפוכה</title>
+    
+    <meta name="description" content="תיקון אוטומטי למקלדת הפוכה מעברית לאנגלית ולהפך.">
+    <meta name="google-site-verification" content="google5d50e2859c657986" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --primary: #7240f2; --bg: #f4f7fe; --card: #ffffff; --text: #333; }
+        body { font-family: 'Assistant', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .container { width: 90%; max-width: 480px; background: var(--card); padding: 40px 30px; border-radius: 35px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); text-align: center; }
+
+        /* תיקון הלוגו שלא יקפוץ */
+        .logo-box { 
+            height: 100px; /* גובה קבוע מונע קפיצות */
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .main-logo { max-height: 80px; width: auto; }
+        .brand { font-size: 0.8rem; letter-spacing: 2px; color: var(--primary); font-weight: 800; }
+
+        /* תפריט ניווט צף משופר */
+        .nav-menu { position: fixed; left: 20px; top: 50%; transform: translateY(-50%); z-index: 1000; }
+        .nav-btn { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .nav-content { display: none; background: white; border-radius: 15px; padding: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); flex-direction: column; gap: 10px; margin-top: 10px; }
+        .nav-content a { text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; padding: 5px 10px; border-radius: 5px; }
+        .nav-content a:hover { background: #f0f0f0; }
+
+        /* עיצוב כפתורים ותיבות */
+        textarea { width: 100%; height: 110px; border: 2px solid #e0e6ed; border-radius: 20px; padding: 15px; margin-bottom: 10px; resize: none; font-family: inherit; font-size: 1.1rem; }
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn { border: none; padding: 15px; border-radius: 15px; color: white; font-weight: 700; cursor: pointer; }
+        .bg-green { background: #1ebea5; } .bg-red { background: #ff4757; } .bg-blue { background: #3498db; } .bg-gray { background: #636e72; }
+        .btn-full { grid-column: span 2; }
+    </style>
+</head>
+<body>
+
+<div class="nav-menu">
+    <button class="nav-btn" onclick="toggleMenu()">📂</button>
+    <div class="nav-content" id="navContent">
+        <a href="index.html">🏠 דף הבית</a>
+        <a href="about.html">📖 אודות</a>
+        <a href="links.html">🔗 כל הקישורים</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="logo-box">
+        <img src="logo.png" alt="Logo" class="main-logo" onerror="this.parentElement.innerHTML='<div class=\'brand\'>SRULLOGIC SYSTEMS</div>'">
+    </div>
+    
+    <h1>Keyboard Elite</h1>
+
+    <textarea id="inputArea" placeholder="הקלד כאן..." oninput="handleInput()"></textarea>
+    <textarea id="outputArea" readonly placeholder="התוצאה..."></textarea>
+
+    <div class="action-grid">
+        <button class="btn bg-green" onclick="copyText()">📋 העתק</button>
+        <button class="btn bg-red" onclick="clearAll()">🗑️ נקה</button>
+        <button class="btn bg-blue btn-full" onclick="googleSearch()">🔍 חפש בגוגל</button>
+    </div>
+</div>
+
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('navContent');
+        menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function handleInput() {
+        const input = document.getElementById('inputArea').value;
+        const hasHebrew = /[א-ת]/.test(input);
+        // לוגיקה אוטומטית כאן...
+        document.getElementById('outputArea').value = input; // לדוגמה
+    }
+    
+    function copyText() { 
+        const out = document.getElementById('outputArea');
+        out.select();
+        document.execCommand('copy');
+    }
+
+    function clearAll() {
+        document.getElementById('inputArea').value = "";
+        document.getElementById('outputArea').value = "";
+    }
+
+    function googleSearch() {
+        const text = document.getElementById('outputArea').value;
+        if(text) window.open(`https://www.google.com/search?q=${encodeURIComponent(text)}`, '_blank');
+    }
+</script>
+
+</body>
+</html>
